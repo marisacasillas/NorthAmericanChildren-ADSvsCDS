@@ -1,0 +1,175 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fmodern\fcharset0 CourierNewPS-BoldMT;\f1\fmodern\fcharset0 CourierNewPSMT;\f2\fmodern\fcharset0 CourierNewPS-ItalicMT;
+}
+{\colortbl;\red255\green255\blue255;\red85\green142\blue40;\red0\green0\blue255;\red255\green0\blue0;
+\red0\green0\blue0;}
+\margl1440\margr1440\vieww18420\viewh15360\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs36 \cf0 # Top-level notes
+\f1\b0\fs24 \
+- All our models are linear mixed-effects regressions\
+- We created models incrementally, adding possible single, 2-way, and 3-way effects if they significantly improved model fit.\
+- I only tested variables for which there were values for every child\
+- I replaced one missing value of mother age with the median value for that education cohort in that corpus (from Bergelson)\'97replace with the real value and re-run the models if you have it!\
+- the logged DV models I refer to go through the same incremental building process (and always land on the same best structure); the only difference is that they have a logged DV\
+- Below I\'92ll highlight significant effects in \cf2 green\cf0  and marginal ones in \cf3 blue\cf0 \
+- I\'92ll mark do-not-miss notes in \cf4 red\cf0 \
+- Note that if you run the script these model results print out as tables that you can use if you like\
+\
+\
+
+\f0\b\fs36 # ADS minutes per hour\
+
+\f1\b0\fs24 This model averages over child-adultgender combinations (122 data points for the 61 kids)\
+\
+ads.minph = ADS minute per hour (numeric)\
+agem.c = centered child age (numeric)\
+adu_gender_m = adu_gender_m (factor)\
+Corpus = corpus (factor)\
+ID = child ID (factor)\
+\
+
+\f0\b Model:\
+
+\f1\b0 ads.minph ~ agem.c * adu_gender_m + (1 | Corpus) + (1 | ID)\
+\cf4 \
+\cf5                      term   estimate  std.error statistic    group\
+1             (Intercept)  1.7547757 0.15395487 11.397988    fixed\
+\cf2 2                  agem.c -0.2137486 0.03299137 -6.478925    fixed\
+3        adu_gender_mMALE -1.0432413 0.20886416 -4.994831    fixed\
+4 agem.c:adu_gender_mMALE  0.1739702 0.04475802  3.886906    fixed\
+\cf5 5       sd_(Intercept).ID  0.3395422         NA        NA       ID\
+6   sd_(Intercept).Corpus  0.0000000         NA        NA   Corpus\
+7 sd_Observation.Residual  1.1534900         NA        NA Residual\
+\cf0 \
+
+\f0\b Findings:\
+
+\f1\b0 Pretty self-explanatory, but see plots/results/ for visual representation. \
+\
+
+\f0\b Residuals:\
+
+\f1\b0 A logged DV model yields slightly better residuals (see plots/supporting/) but the effect estimates are similar, so I suggest we report the non-logged DV effects in the main paper and include the logged ones in supplementary materials.\
+\
+\
+
+\f0\b\fs36 # CDS minutes per hour\
+
+\f1\b0\fs24 This model averages over child-adultgender combinations (122 data points for the 61 kids)\
+\
+cds.minph = CDS minute per hour (numeric)\
+adu_gender_m = adu_gender_m (factor)\
+Corpus = corpus (factor)\
+ID = child ID (factor)\
+\
+
+\f0\b Model:\
+
+\f1\b0 cds.minph ~ adu_gender_m + (1 | Corpus) + (1 | ID)\
+\cf4 \
+\cf0                      term  estimate std.error statistic    group\
+1             (Intercept)  2.866982  0.184610 15.529938    fixed\
+\cf2 2        adu_gender_mMALE -1.947737  0.261078 -7.460365    fixed\
+\cf0 3       sd_(Intercept).ID  0.000000        NA        NA       ID\
+4   sd_(Intercept).Corpus  0.000000        NA        NA   Corpus\
+5 sd_Observation.Residual  1.441850        NA        NA Residual\
+\
+
+\f0\b Findings:\
+
+\f1\b0 Pretty self-explanatory, and interestingly no explanatory value for child age. See plots/results/ for visual representation. \
+\
+
+\f0\b Residuals:\
+
+\f1\b0 A logged DV model yields slightly better residuals (see plots/supporting/) but the effect estimates are similar, so I suggest we report the non-logged DV effects in the main paper and include the logged ones in supplementary materials.\
+\
+\
+
+\f0\b\fs36 # Proportion CDS (seconds CDS/seconds XDS)\
+
+\f1\b0\fs24 This model averages over child-adultgender combinations (122 data points for the 61 kids)\
+\
+prp.cds = proportion CDS (numeric)\
+agem.c = centered child age (numeric)\
+adu_gender_m = adu_gender_m (factor)\
+Corpus = corpus (factor)\
+ID = child ID (factor)\
+\
+
+\f0\b Model:\
+
+\f1\b0 prp.cds ~ agem.c * adu_gender_m + (1 | Corpus) + (1 | ID)\
+\cf4 \
+\cf0                      term    estimate   std.error statistic    group\
+1             (Intercept)  0.65842038 0.028392907 23.189608    fixed\
+\cf2 2                  agem.c  0.03399358 0.006074571  5.596047    fixed\
+3        adu_gender_mMALE -0.09667252 0.037660967 -2.566915    fixed\
+4 agem.c:adu_gender_mMALE -0.01845322 0.007939535 -2.324219    fixed\
+\cf0 5       sd_(Intercept).ID  0.10337111          NA        NA       ID\
+6   sd_(Intercept).Corpus  0.00000000          NA        NA   Corpus\
+7 sd_Observation.Residual  0.19419601          NA        NA Residual\
+\
+
+\f0\b Findings:\
+
+\f1\b0 Pretty self-explanatory, but see plots/results/ for visual representation. \
+\
+
+\f0\b Residuals:\
+
+\f1\b0 A logged DV model yields slightly better residuals (see plots/supporting/) but the effect estimates are similar, so I suggest we report the non-logged DV effects in the main paper and include the logged ones in supplementary materials.\
+\
+\
+
+\f0\b\fs36 # CDS utterance length (in seconds)\
+
+\f1\b0\fs24 Unlike the others, \cf4 this model is not averaged over blocks or children or anything: it includes all 5728 CDS utterances in the dataset from the 61 kids\cf0 . Which I did because I can! Utterance length didn\'92t have the same kind of crazy DV distribution at the start that the other measures did, though it still looks weird (see plots/supporting/). As you\'92ll see, maybe that wasn\'92t the best idea\'85\
+\
+utt_dur.sec = duration of the utterance in seconds (numeric)\
+agem.c = centered child age (numeric)\
+chi_gender = gender of the child (factor)\
+mat_ed_num3 = 3-way contrast of maternal education: no-BA, BA, Advanced Degree (factor)\
+adu_gender_m = gender of the speaker; always adult (factor)\
+Corpus = corpus (factor)\
+ID = child ID (factor)\
+uniq_block = dataset-unique conversational block ID (factor)\
+\
+
+\f0\b Model:\
+
+\f1\b0 utt_dur.sec ~ adu_gender_m + agem.c:chi_gender:mat_ed_num3 +  \
+    agem.c:chi_gender:adu_gender_m + (1 | Corpus) + (1 | ID) +      (1 | uniq_block)\
+\cf4 \
+\cf0                                        term      estimate   std.error   statistic      group\
+1                               (Intercept)  1.424084e+00 0.010834538 131.4392536      fixed\
+\cf2 2                          adu_gender_mMALE -7.604665e-02 0.021698761  -3.5046542      fixed\
+\cf0 3       agem.c:chi_genderfemale:mat_ed_num3  1.954948e-03 0.001534218   1.2742310      fixed\
+\cf2 4         agem.c:chi_gendermale:mat_ed_num3 -3.669700e-03 0.001218816  -3.0108736      fixed\
+\cf3 5  adu_gender_mMALE:agem.c:chi_genderfemale -1.133918e-02 0.006995904  -1.6208318      fixed\
+\cf0 6    adu_gender_mMALE:agem.c:chi_gendermale  3.578232e-03 0.005093754   0.7024744      fixed\
+7                 sd_(Intercept).uniq_block  1.090319e-01          NA          NA uniq_block\
+8                         sd_(Intercept).ID  7.389766e-06          NA          NA         ID\
+9                     sd_(Intercept).Corpus  0.000000e+00          NA          NA     Corpus\
+10                  sd_Observation.Residual  6.072020e-01          NA          NA   Residual\
+\
+
+\f0\b Findings:\
+
+\f1\b0 \cf4 All of these effects are super duper small\cf0 . The adult gender effect is self-explanatory. The three-way effects are weird and hard to interpret (a significant child age-maternal education interaction for male infants and a marginal child age-child gender effectfor male speakers??)\'85 but see plots/results/ for more. \
+\
+
+\f0\b Residuals:\
+
+\f1\b0 These residuals are 
+\f2\i kind of
+\f1\i0  cool-looking but actually really not cool at all because wtf is that?!?. A logged DV model looks similar, but 
+\f0\b \cf4 I think we need to reassess this
+\f1\b0 \cf0 . For now I wouldn\'92t believe in the 3-way effects. If I had more time my next step would be trying models with data averaged over blocks or even over kids like we do in the rest of the models. I\'92m not sure what\'92s causing that craziness.\
+\
+
+\f0\b\fs36 # Other\
+
+\f1\b0\fs24 I didn\'92t make a model of ADS utterance length because I figured it wouldn\'92t be interesting but that\'92s something you could do if you wanted.}
