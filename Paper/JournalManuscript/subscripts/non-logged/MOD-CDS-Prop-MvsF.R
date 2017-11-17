@@ -15,8 +15,8 @@
 # - With 1 data point per child we can't include a random effect of child
 
 # Separate models by speaker gender ####
-f.cdspp <- filter(propCDS.agd, adu_gender_m == "FEMALE")
-m.cdspp <- filter(propCDS.agd, adu_gender_m == "MALE")
+f.cdspp <- filter(propCDS.agd.sub, adu_gender_m == "FEMALE")
+m.cdspp <- filter(propCDS.agd.sub, adu_gender_m == "MALE")
 
 # FEMALES ####
 # 0. Random effects only (base model) ####

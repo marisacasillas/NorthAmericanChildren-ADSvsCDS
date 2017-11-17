@@ -362,7 +362,7 @@ nocds <- filter(propCDS.agd, ads.sec + cds.sec == 0)
 # is verified for 53 of the children, so we remove the 8 male-speech
 # cells that can't be verified from our analysis of proportion CDS
 
-propCDS.agd <- filter(propCDS.agd, ads.sec + cds.sec > 0)
+propCDS.agd.sub <- filter(propCDS.agd, ads.sec + cds.sec > 0)
 
 # Incrementally build best models of proportion CDS
 # Primary models
@@ -376,7 +376,7 @@ source(paste0(scripts, models, "MOD-CDS-Prop-MvsF.R"))
 CDS.prp.mdl <- tidy(cds.prp.best)
 CDS.prp.mdl
 # Proportion CDS, split by speaker gender
-CDS.prp.mdl.agd <- tidy(cds.prp.agd.best)
+CDS.prp.mdl.agd <- tidy(cds.prp.agd.s.best)
 CDS.prp.mdl.agd
 # Proportion CDS, separate models by speaker gender
 CDS.prp.mdl.agd.s.F <- tidy(fcd.prp.best)
