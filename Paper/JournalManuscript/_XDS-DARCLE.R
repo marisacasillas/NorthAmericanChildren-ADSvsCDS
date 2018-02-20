@@ -1,6 +1,5 @@
 ################################################################################
 # PREAMBLE ####
-rm(list=ls())
 # Working dir, relative paths, and custom functions and
 # settings are stored in the helper file
 source("_helper-XDS-DARCLE.R")
@@ -79,7 +78,7 @@ blockdata <-  xdsall %>%
               dplyr::select(c(Corpus, ChiID, ID, aclew_id, clan_file,
                               block, uniq_block, blk_dur, 
                               chi_gender, AgeMonths, mat_ed, mat_ed_num,
-                              mat_ed_num3, mother_dob, number_older_sibs)) %>%
+                              mat_ed_num3, mother_dob, n_sibs)) %>%
               mutate(uniq_block = as.character(uniq_block)) %>%
               distinct()
 
@@ -96,6 +95,7 @@ blockdata.OL <- blockdata %>%
 # Remove the outlier blocks from the data
 modeldata.excl <- modeldata %>%
                   anti_join(blockdata.OL, by = "uniq_block")
+
 
 ################################################################################
 # ADS and CDS minutes per hour (quantity) ####
@@ -244,7 +244,6 @@ ADS.minph.mdl.agd.s.M
 if (models == "logged/") {
   ADS.minph.mdl.agd.m <- tidy(ads.agd.s.mph.match)
 }
-
 
 # CDS minutes per hour overall
 CDS.minph.mdl <- tidy(cds.mph.best)

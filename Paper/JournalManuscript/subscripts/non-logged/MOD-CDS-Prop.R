@@ -295,14 +295,14 @@ cds.prp.agd.age.agd.ageagd.agecgdagd <-  lmer(prp.cds ~ agem.c + adu_gender_m +
                            agem.c:adu_gender_m +
                            agem.c:chi_gender:adu_gender_m +
                        (1|Corpus) + (1|ID), data = propCDS.agd)
-anova(cds.prp.agd.age.agd.ageagd, cds.prp.agd.age.agd.agecgdagd)
+anova(cds.prp.agd.age.agd.ageagd, cds.prp.agd.age.agd.ageagd.agecgdagd)
                 # no improvement
 
 cds.prp.agd.age.agd.ageagd.agecgdmed <-  lmer(prp.cds ~ agem.c + adu_gender_m +
                            agem.c:adu_gender_m +
                            agem.c:chi_gender:mat_ed_num3 +
                        (1|Corpus) + (1|ID), data = propCDS.agd)
-anova(cds.prp.agd.age.agd.ageagd, cds.prp.agd.age.agd.agecgdmed)
+anova(cds.prp.agd.age.agd.ageagd, cds.prp.agd.age.agd.ageagd.agecgdmed)
                 # no improvement
 
 cds.prp.agd.age.agd.ageagd.agecgdmyr <-  lmer(prp.cds ~ agem.c + adu_gender_m +

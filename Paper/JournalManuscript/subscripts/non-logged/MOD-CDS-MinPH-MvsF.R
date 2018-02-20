@@ -5,13 +5,11 @@
 # chi_gender
 # mat_ed_num3
 # mother_dob
-# number_older_sibs
+# n_sibs
 
 # Notes:
 # - In what follows I'll only report model outcomes for models that
 #   significantly improve upon base/previous models
-# - I will also avoid putting the known correlated effects (mother_dob--mat_ed_num3
-#   and mother_dob--number_older_sibs) in the same model
 # - With 1 data point per child we can't include a random effect of child
 
 # Separate models by speaker gender ####
@@ -42,15 +40,10 @@ fcd.mph.med <-  lmer(cds.minph ~ mat_ed_num3 +
 anova(fcd.bas, fcd.mph.med)
                 # no improvement
 
-fcd.mph.myr <-  lmer(cds.minph ~ mother_dob +
-                       (1|Corpus), data = f.cdsrd)
-anova(fcd.bas, fcd.mph.myr)
-                # no improvement
-
-fcd.mph.nsb <-  lmer(cds.minph ~ number_older_sibs +
+fcd.mph.nsb <-  lmer(cds.minph ~ n_sibs +
                        (1|Corpus), data = f.cdsrd)
 anova(fcd.bas, fcd.mph.nsb)
-                # no improvement; anova throws convergence warning
+                # no improvement
 
 
 # 2. Try out 2-way interactions ####
@@ -70,15 +63,8 @@ fcd.mph.agemed <- lmer(cds.minph ~
 anova(fcd.bas, fcd.mph.agemed)
                     # no improvement
 
-fcd.mph.agemyr <- lmer(cds.minph ~
-                             agem.c:mother_dob +
-                           (1|Corpus),
-                           data = f.cdsrd)
-anova(fcd.bas, fcd.mph.agemyr)
-                    # only marginal improvement (p = 0.09376)
-
 fcd.mph.agensb <- lmer(cds.minph ~
-                             agem.c:number_older_sibs +
+                             agem.c:n_sibs +
                            (1|Corpus),
                            data = f.cdsrd)
 anova(fcd.bas, fcd.mph.agensb)
@@ -91,30 +77,19 @@ fcd.mph.cgdmed <- lmer(cds.minph ~
 anova(fcd.bas, fcd.mph.cgdmed)
                     # no improvement
 
-fcd.mph.cgdmyr <- lmer(cds.minph ~
-                             chi_gender:mother_dob +
-                           (1|Corpus),
-                           data = f.cdsrd)
-anova(fcd.bas, fcd.mph.cgdmyr)
-                    # no improvement
-
 fcd.mph.cgdnsb <- lmer(cds.minph ~
-                             chi_gender:number_older_sibs +
+                             chi_gender:n_sibs +
                            (1|Corpus),
                            data = f.cdsrd)
 anova(fcd.bas, fcd.mph.cgdnsb)
                     # no improvement
 
-# No model with mat_ed_num3:mother_dob because they are correlated
-
 fcd.mph.mednsb <- lmer(cds.minph ~
-                             mat_ed_num3:number_older_sibs +
+                             mat_ed_num3:n_sibs +
                            (1|Corpus),
                            data = f.cdsrd)
 anova(fcd.bas, fcd.mph.mednsb)
                     # no improvement
-
-# No model with mother_dob:number_older_sibs because they are correlated
 
 
 # 3. Try out three-way interactions ####
@@ -127,33 +102,26 @@ fcd.mph.agecgdmed <- lmer(cds.minph ~
 anova(fcd.bas, fcd.mph.agecgdmed)
                     # no improvement
 
-fcd.mph.agecgdmyr <- lmer(cds.minph ~
-                           agem.c:chi_gender:mother_dob +
-                           (1|Corpus),
-                           data = f.cdsrd)
-anova(fcd.bas, fcd.mph.agecgdmyr)
-                    # no improvement
-
 fcd.mph.agecgdnsb <- lmer(cds.minph ~
-                           agem.c:chi_gender:number_older_sibs +
+                           agem.c:chi_gender:n_sibs +
                            (1|Corpus),
                            data = f.cdsrd)
 anova(fcd.bas, fcd.mph.agecgdnsb)
-                    # no improvement
+                    # no improvement; throws convergence warning
 
 fcd.mph.agemednsb <- lmer(cds.minph ~
-                           agem.c:mat_ed_num3:number_older_sibs +
+                           agem.c:mat_ed_num3:n_sibs +
                            (1|Corpus),
                            data = f.cdsrd)
 anova(fcd.bas, fcd.mph.agemednsb)
-                    # no improvement
+                    # no improvement; throws convergence warning
 
 fcd.mph.cgdmednsb <- lmer(cds.minph ~
-                           chi_gender:mat_ed_num3:number_older_sibs +
+                           chi_gender:mat_ed_num3:n_sibs +
                            (1|Corpus),
                            data = f.cdsrd)
 anova(fcd.bas, fcd.mph.cgdmednsb)
-                    # no improvement
+                    # no improvement; throws convergence warning
 
 
 # Best model: ####
@@ -183,14 +151,9 @@ anova(mcd.bas, mcd.mph.cgd)
 mcd.mph.med <-  lmer(cds.minph ~ mat_ed_num3 +
                        (1|Corpus), data = m.cdsrd)
 anova(mcd.bas, mcd.mph.med)
-                # no improvement; anova throws convergence warning
+                # no improvement; throws convergence warning
 
-mcd.mph.myr <-  lmer(cds.minph ~ mother_dob +
-                       (1|Corpus), data = m.cdsrd)
-anova(mcd.bas, mcd.mph.myr)
-                # no improvement
-
-mcd.mph.nsb <-  lmer(cds.minph ~ number_older_sibs +
+mcd.mph.nsb <-  lmer(cds.minph ~ n_sibs +
                        (1|Corpus), data = m.cdsrd)
 anova(mcd.bas, mcd.mph.nsb)
                 # no improvement
@@ -213,19 +176,12 @@ mcd.mph.agemed <- lmer(cds.minph ~
 anova(mcd.bas, mcd.mph.agemed)
                     # no improvement
 
-mcd.mph.agemyr <- lmer(cds.minph ~
-                             agem.c:mother_dob +
-                           (1|Corpus),
-                           data = m.cdsrd)
-anova(mcd.bas, mcd.mph.agemyr)
-                    # no improvement
-
 mcd.mph.agensb <- lmer(cds.minph ~
-                             agem.c:number_older_sibs +
+                             agem.c:n_sibs +
                            (1|Corpus),
                            data = m.cdsrd)
 anova(mcd.bas, mcd.mph.agensb)
-                    # no improvement; anova throws convergence warning
+                    # no improvement
 
 mcd.mph.cgdmed <- lmer(cds.minph ~
                              chi_gender:mat_ed_num3 +
@@ -234,31 +190,19 @@ mcd.mph.cgdmed <- lmer(cds.minph ~
 anova(mcd.bas, mcd.mph.cgdmed)
                     # no improvement
 
-mcd.mph.cgdmyr <- lmer(cds.minph ~
-                             chi_gender:mother_dob +
-                           (1|Corpus),
-                           data = m.cdsrd)
-anova(mcd.bas, mcd.mph.cgdmyr)
-                    # no improvement
-
 mcd.mph.cgdnsb <- lmer(cds.minph ~
-                             chi_gender:number_older_sibs +
+                             chi_gender:n_sibs +
                            (1|Corpus),
                            data = m.cdsrd)
 anova(mcd.bas, mcd.mph.cgdnsb)
                     # no improvement
 
-# No model with mat_ed_num3:mother_dob because they are correlated
-
 mcd.mph.mednsb <- lmer(cds.minph ~
-                             mat_ed_num3:number_older_sibs +
+                             mat_ed_num3:n_sibs +
                            (1|Corpus),
                            data = m.cdsrd)
 anova(mcd.bas, mcd.mph.mednsb)
                     # no improvement
-
-# No model with mother_dob:number_older_sibs because they are correlated
-
 
 
 # 3. Try out three-way interactions ####
@@ -271,29 +215,22 @@ mcd.mph.agecgdmed <- lmer(cds.minph ~
 anova(mcd.bas, mcd.mph.agecgdmed)
                     # no improvement
 
-mcd.mph.agecgdmyr <- lmer(cds.minph ~
-                           agem.c:chi_gender:mother_dob +
-                           (1|Corpus),
-                           data = m.cdsrd)
-anova(mcd.bas, mcd.mph.agecgdmyr)
-                    # no improvement
-
 mcd.mph.agecgdnsb <- lmer(cds.minph ~
-                           agem.c:chi_gender:number_older_sibs +
+                           agem.c:chi_gender:n_sibs +
                            (1|Corpus),
                            data = m.cdsrd)
 anova(mcd.bas, mcd.mph.agecgdnsb)
                     # no improvement
 
 mcd.mph.agemednsb <- lmer(cds.minph ~
-                           agem.c:mat_ed_num3:number_older_sibs +
+                           agem.c:mat_ed_num3:n_sibs +
                            (1|Corpus),
                            data = m.cdsrd)
 anova(mcd.bas, mcd.mph.agemednsb)
-                    # no improvement
+                    # no improvement; throws convergence warning
 
 mcd.mph.cgdmednsb <- lmer(cds.minph ~
-                           chi_gender:mat_ed_num3:number_older_sibs +
+                           chi_gender:mat_ed_num3:n_sibs +
                            (1|Corpus),
                            data = m.cdsrd)
 anova(mcd.bas, mcd.mph.cgdmednsb)

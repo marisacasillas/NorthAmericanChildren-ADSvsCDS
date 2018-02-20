@@ -66,6 +66,8 @@ IDS_demo_update <- read_csv(paste0(input.path, vd.demo.update)) %>%
 #                  to lumped with HD, and 'none' from mcdivitt got lumped with
 #                  PH. The mat_ed_num and fat_ed_num are just the numeric
 #                  versions of these vars so you can relump as you'd like
+IDS_demo_update$n_sibs <- IDS_demo_update$number_older_sibs
+IDS_demo_update$n_sibs[which(IDS_demo_update$number_older_sibs > 1)] <- 2
 
 # Merge the child data into the block coding
 xdsall <- blkall %>%
