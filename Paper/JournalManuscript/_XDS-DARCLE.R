@@ -401,27 +401,6 @@ by.rec.scores <- adsratedata %>%
 cor.test(by.rec.scores$cds.min, by.rec.scores$ads.min,
          method = "spearman")
 
-cor.test(by.rec.scores$cds.min, by.rec.scores$prp.cds,
-         method = "spearman")
-
-cor.test(by.rec.scores$ads.min, by.rec.scores$prp.cds,
-         method = "spearman")
-
-
-# split by talker gender
-cdsratedata.agd.scores <- cdsratedata.agd %>% dplyr::select(ID, adu_gender_m, cds.min)
-propCDS.agd.scores <- propCDS.agd %>% dplyr::select(ID, adu_gender_m, prp.cds)
-by.rec.scores.agd <- adsratedata.agd %>%
-  left_join(cdsratedata.agd.scores) %>%
-  left_join(propCDS.agd.scores)
-
-# split by talker gender, not including zero cases
-cdsratedata.agd.s.scores <- cdsratedata.agd.sub %>% dplyr::select(ID, adu_gender_m, cds.min)
-propCDS.agd.s.scores <- propCDS.agd.sub %>% dplyr::select(ID, adu_gender_m, prp.cds)
-by.rec.scores.agd.sub <- adsratedata.agd.sub %>%
-  left_join(cdsratedata.agd.s.scores) %>%
-  left_join(propCDS.agd.s.scores)
-
 
 ################################################################################
 # # CDS utterance length (complexity) ####
