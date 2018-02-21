@@ -19,7 +19,6 @@ m.adsrd <- filter(adsratedata.agd.sub, adu_gender_m == "MALE")
 # 0. Random effects only (base model) ####
 fad.bas <-  lmer(ads.minph ~ (1|Corpus), data = f.adsrd)
 
-
 # 1. Single-predictor effects ####
 # Significant contributors: child age and maternal age
 # Individual models ####
@@ -27,7 +26,7 @@ fad.mph.age <-  lmer(ads.minph ~ agem.c +
                       (1|Corpus), data = f.adsrd)
                 # effect of child age
 anova(fad.bas, fad.mph.age)
-                # improved over previous model
+                # improved over previous model; throws convergence warning
 
 fad.mph.cgd <-  lmer(ads.minph ~ chi_gender +
                        (1|Corpus), data = f.adsrd)
@@ -43,7 +42,6 @@ fad.mph.nsb <-  lmer(ads.minph ~ n_sibs +
                        (1|Corpus), data = f.adsrd)
 anova(fad.bas, fad.mph.nsb)
                 # no improvement
-
 
 # 2. Try out 2-way interactions ####
 # Nothing to add
@@ -90,8 +88,6 @@ fad.mph.age.mednsb <- lmer(ads.minph ~ agem.c +
 anova(fad.mph.age, fad.mph.age.mednsb)
                     # no improvement; throws convergence warning
 
-
-
 # 3. Try out three-way interactions ####
 # Nothing to add
 # Individual models ####
@@ -124,16 +120,12 @@ anova(fad.mph.age, fad.mph.age.cgdmednsb)
                     # no improvement; throws convergence warning
 
 # Best model: ####
-fad.mph.best <- lmer(ads.minph ~ agem.c +
-                 (1|Corpus),
-                 data = f.adsrd)
-
+fad.mph.best <- fad.mph.age
 
 
 # MALES ####
 # 0. Random effects only (base model) ####
 mad.bas <-  lmer(ads.minph ~ (1|Corpus), data = m.adsrd)
-
 
 # 1. Single-predictor effects ####
 # Significant contributors: child age and maternal age
@@ -157,7 +149,6 @@ mad.mph.nsb <-  lmer(ads.minph ~ n_sibs +
                        (1|Corpus), data = m.adsrd)
 anova(mad.bas, mad.mph.nsb)
                 # no improvement
-
 
 # 2. Try out 2-way interactions ####
 # Nothing to add
@@ -204,7 +195,6 @@ mad.mph.mednsb <- lmer(ads.minph ~
 anova(mad.bas, mad.mph.mednsb)
                     # no improvement
 
-
 # 3. Try out three-way interactions ####
 # Nothing to add
 # Individual models ####
@@ -220,7 +210,7 @@ mad.mph.agecgdnsb <- lmer(ads.minph ~
                            (1|Corpus),
                            data = m.adsrd)
 anova(mad.bas, mad.mph.agecgdnsb)
-                    # no improvement; throws convergence warning
+                    # no improvement
 
 mad.mph.agemednsb <- lmer(ads.minph ~
                            agem.c:mat_ed_num3:n_sibs +
@@ -237,6 +227,4 @@ anova(mad.bas, mad.mph.cgdmednsb)
                     # no improvement
 
 # Best model: ####
-mad.mph.best <- lmer(ads.minph ~ 
-                 (1|Corpus),
-                 data = m.adsrd)
+mad.mph.best <- mad.bas

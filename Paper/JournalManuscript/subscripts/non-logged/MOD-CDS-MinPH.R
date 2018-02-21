@@ -4,7 +4,6 @@
 # agem.c
 # chi_gender
 # mat_ed_num3
-# mother_dob
 # n_sibs
 # adu_gender_m (for cdsratedata.agd and cdsratedata.agd.sub)
 
@@ -17,7 +16,6 @@
 #### MODEL 1: CDS MinPH overall (1 datapoint per child) ##########
 # 0. Random effects only (base model) ####
 cds.bas <-  lmer(cds.minph ~ (1|Corpus), data = cdsratedata)
-
 
 # 1. Single-predictor effects ####
 # Significant contributors: maternal education
@@ -42,7 +40,6 @@ cds.mph.nsb <-  lmer(cds.minph ~ n_sibs +
                        (1|Corpus), data = cdsratedata)
 anova(cds.bas, cds.mph.nsb)
                 # no improvement
-
 
 # 2. Try out 2-way interactions ####
 # Nothing to add
@@ -83,7 +80,6 @@ cds.mph.med.mednsb <-  lmer(cds.minph ~ mat_ed_num3 +
 anova(cds.mph.med, cds.mph.med.mednsb)
                     # no improvement
 
-
 # 3. Try out three-way interactions ####
 # Nothing to add
 # Individual models ####
@@ -115,18 +111,14 @@ cds.mph.med.cgdmednsb <- lmer(cds.minph ~ mat_ed_num3 +
 anova(cds.mph.med, cds.mph.med.cgdmednsb)
                     # no improvement
 
-
 # Best model: ####
-cds.mph.best <- lmer(cds.minph ~ mat_ed_num3 +
-                 (1|Corpus),
-                 data = cdsratedata)
+cds.mph.best <- cds.mph.med
 
 
 #### MODEL 2: CDS MinPH by speaker gender (2 datapoints per child) ##########
 # 0. Random effects only (base model)
 cds.agd.bas <-  lmer(cds.minph ~ (1|Corpus) + (1|ID),
                      data = cdsratedata.agd)
-
 
 # 1. Single-predictor effects ####
 # Significant contributors: speaker gender
@@ -156,7 +148,6 @@ cds.agd.mph.nsb <-  lmer(cds.minph ~ n_sibs +
                        (1|Corpus) + (1|ID), data = cdsratedata.agd)
 anova(cds.agd.bas, cds.agd.mph.nsb)
                 # no improvement
-
 
 # 2. Try out 2-way interactions ####
 # Nothing to add
@@ -220,7 +211,6 @@ cds.agd.mph.agd.mednsb <-  lmer(cds.minph ~ adu_gender_m +
                        (1|Corpus) + (1|ID), data = cdsratedata.agd)
 anova(cds.agd.mph.agd, cds.agd.mph.agd.mednsb)
                 # no improvement
-
 
 # 3. Try out three-way interactions ####
 # Nothing to add
@@ -295,11 +285,8 @@ cds.agd.mph.agd.agdmednsb <- lmer(cds.minph ~ adu_gender_m +
 anova(cds.agd.mph.agd, cds.agd.mph.agd.agdmednsb)
                     # no improvement
 
-
 # Best model: ####
-cds.agd.mph.best <- lmer(cds.minph ~ adu_gender_m +
-                 (1|Corpus) + (1|ID),
-                 data = cdsratedata.agd)
+cds.agd.mph.best <- cds.agd.mph.agd
 
 
 #### MODEL 3: CDS MinPH by speaker gender w/ exclusions ##########
@@ -307,7 +294,6 @@ cds.agd.mph.best <- lmer(cds.minph ~ adu_gender_m +
 # 0. Random effects only (base model)
 cds.agd.s.bas <-  lmer(cds.minph ~ (1|Corpus) + (1|ID),
                        data = cdsratedata.agd.sub)
-
 
 # 1. Single-predictor effects ####
 # Significant contributors: speaker gender
@@ -337,7 +323,6 @@ cds.agd.s.mph.nsb <-  lmer(cds.minph ~ n_sibs +
                        (1|Corpus) + (1|ID), data = cdsratedata.agd.sub)
 anova(cds.agd.s.bas, cds.agd.s.mph.nsb)
                 # no improvement
-
 
 # 2. Try out 2-way interactions ####
 # Nothing to add
@@ -401,7 +386,6 @@ cds.agd.s.mph.agd.mednsb <-  lmer(cds.minph ~ adu_gender_m +
                        (1|Corpus) + (1|ID), data = cdsratedata.agd.sub)
 anova(cds.agd.s.mph.agd, cds.agd.s.mph.agd.mednsb)
                 # no improvement
-
 
 # 3. Try out three-way interactions ####
 # Nothing to add
@@ -476,8 +460,5 @@ cds.agd.s.mph.agd.agdmednsb <- lmer(cds.minph ~ adu_gender_m +
 anova(cds.agd.s.mph.agd, cds.agd.s.mph.agd.agdmednsb)
                     # no improvement
 
-
 # Best model: ####
-cds.agd.s.mph.best <- lmer(cds.minph ~ adu_gender_m +
-                 (1|Corpus) + (1|ID),
-                 data = cdsratedata.agd.sub)
+cds.agd.s.mph.best <- cds.agd.s.mph.agd

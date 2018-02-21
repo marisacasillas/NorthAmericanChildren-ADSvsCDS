@@ -4,22 +4,18 @@
 # agem.c
 # chi_gender
 # mat_ed_num3
-# mother_dob
-# number_older_sibs
+# n_sibs
 # adu_gender_m (for adsratedata.agd and adsratedata.agd.sub)
 
 # Notes:
 # - In what follows I'll only report model outcomes for models that
 #   significantly improve upon base/previous models
-# - I will also avoid putting the known correlated effects (mother_dob--mat_ed_num3
-#   and mother_dob--number_older_sibs) in the same model
 # - With 1 data point per child we can't include a random effect of child
 
 
 #### MODEL 1: ADS MinPH overall (1 datapoint per child) ##########
 # 0. Random effects only (base model) ####
 ads.bas <-  lmer(ads.minph.lg ~ (1|Corpus), data = adsratedata)
-
 
 # 1. Single-predictor effects ####
 # Significant contributors: child age and maternal age
@@ -40,137 +36,97 @@ ads.mph.med <-  lmer(ads.minph.lg ~ mat_ed_num3 +
 anova(ads.bas, ads.mph.med)
                 # no improvement
 
-ads.mph.myr <-  lmer(ads.minph.lg ~ mother_dob +
-                       (1|Corpus), data = adsratedata)
-                # effect of maternal age
-anova(ads.bas, ads.mph.myr)
-                # improved over previous model
-
-ads.mph.nsb <-  lmer(ads.minph.lg ~ number_older_sibs +
+ads.mph.nsb <-  lmer(ads.minph.lg ~ n_sibs +
                        (1|Corpus), data = adsratedata)
 anova(ads.bas, ads.mph.nsb)
                 # no improvement
 
-# Add both significant single predictors into a model for
-# comparison with additional 2-way and 3-way effects
-ads.mph.age.myr <-  lmer(ads.minph.lg ~ agem.c + mother_dob +
-                       (1|Corpus), data = adsratedata)
-
+# Continue with child age as base model for comparison
 
 # 2. Try out 2-way interactions ####
 # Nothing to add
 # Individual models ####
-ads.mph.age.myr.agecgd <- lmer(ads.minph.lg ~ agem.c + mother_dob +
+ads.mph.age.agecgd <- lmer(ads.minph.lg ~ agem.c +
                              agem.c:chi_gender +
                            (1|Corpus),
                            data = adsratedata)
-anova(ads.mph.age.myr, ads.mph.age.myr.agecgd)
-                    # no improvement
+anova(ads.mph.age, ads.mph.age.agecgd)
+                    # no improvement; throws convergence warning
 
-ads.mph.age.myr.agemed <- lmer(ads.minph.lg ~ agem.c + mother_dob +
+ads.mph.age.agemed <- lmer(ads.minph.lg ~ agem.c +
                              agem.c:mat_ed_num3 +
                            (1|Corpus),
                            data = adsratedata)
-anova(ads.mph.age.myr, ads.mph.age.myr.agemed)
+anova(ads.mph.age, ads.mph.age.agemed)
                     # no improvement
 
-ads.mph.age.myr.agemyr <- lmer(ads.minph.lg ~ agem.c + mother_dob +
-                             agem.c:mother_dob +
+ads.mph.age.agensb <- lmer(ads.minph.lg ~ agem.c +
+                             agem.c:n_sibs +
                            (1|Corpus),
                            data = adsratedata)
-anova(ads.mph.age.myr, ads.mph.age.myr.agemyr)
-                    # no improvement
+anova(ads.mph.age, ads.mph.age.agensb)
+                    # only marginal improvement (p = 0.08914); throws convergence warning
 
-ads.mph.age.myr.agensb <- lmer(ads.minph.lg ~ agem.c + mother_dob +
-                             agem.c:number_older_sibs +
-                           (1|Corpus),
-                           data = adsratedata)
-anova(ads.mph.age.myr, ads.mph.age.myr.agensb)
-                    # no improvement
-
-ads.mph.age.myr.cgdmed <- lmer(ads.minph.lg ~ agem.c + mother_dob +
+ads.mph.age.cgdmed <- lmer(ads.minph.lg ~ agem.c +
                              chi_gender:mat_ed_num3 +
                            (1|Corpus),
                            data = adsratedata)
-anova(ads.mph.age.myr, ads.mph.age.myr.cgdmed)
+anova(ads.mph.age, ads.mph.age.cgdmed)
                     # no improvement
 
-ads.mph.age.myr.cgdmyr <- lmer(ads.minph.lg ~ agem.c + mother_dob +
-                             chi_gender:mother_dob +
+ads.mph.age.cgdnsb <- lmer(ads.minph.lg ~ agem.c +
+                             chi_gender:n_sibs +
                            (1|Corpus),
                            data = adsratedata)
-anova(ads.mph.age.myr, ads.mph.age.myr.cgdmyr)
+anova(ads.mph.age, ads.mph.age.cgdnsb)
                     # no improvement
 
-ads.mph.age.myr.cgdnsb <- lmer(ads.minph.lg ~ agem.c + mother_dob +
-                             chi_gender:number_older_sibs +
+ads.mph.age.mednsb <- lmer(ads.minph.lg ~ agem.c +
+                             mat_ed_num3:n_sibs +
                            (1|Corpus),
                            data = adsratedata)
-anova(ads.mph.age.myr, ads.mph.age.myr.cgdnsb)
+anova(ads.mph.age, ads.mph.age.mednsb)
                     # no improvement
-
-# No model with mat_ed_num3:mother_dob because they are correlated
-
-ads.mph.age.myr.mednsb <- lmer(ads.minph.lg ~ agem.c + mother_dob +
-                             mat_ed_num3:number_older_sibs +
-                           (1|Corpus),
-                           data = adsratedata)
-anova(ads.mph.age.myr, ads.mph.age.myr.mednsb)
-                    # no improvement
-
-# No model with mother_dob:number_older_sibs because they are correlated
-
 
 # 3. Try out three-way interactions ####
 # Nothing to add
 # Individual models ####
-ads.mph.age.myr.agecgdmed <- lmer(ads.minph.lg ~ agem.c + mother_dob +
+ads.mph.age.agecgdmed <- lmer(ads.minph.lg ~ agem.c +
                            agem.c:chi_gender:mat_ed_num3 +
                            (1|Corpus),
                            data = adsratedata)
-anova(ads.mph.age.myr, ads.mph.age.myr.agecgdmed)
+anova(ads.mph.age, ads.mph.age.agecgdmed)
                     # no improvement
 
-ads.mph.age.myr.agecgdmyr <- lmer(ads.minph.lg ~ agem.c + mother_dob +
-                           agem.c:chi_gender:mother_dob +
+ads.mph.age.agecgdnsb <- lmer(ads.minph.lg ~ agem.c +
+                           agem.c:chi_gender:n_sibs +
                            (1|Corpus),
                            data = adsratedata)
-anova(ads.mph.age.myr, ads.mph.age.myr.agecgdmyr)
+anova(ads.mph.age, ads.mph.age.agecgdnsb)
                     # no improvement
 
-ads.mph.age.myr.agecgdnsb <- lmer(ads.minph.lg ~ agem.c + mother_dob +
-                           agem.c:chi_gender:number_older_sibs +
+ads.mph.age.agemednsb <- lmer(ads.minph.lg ~ agem.c +
+                           agem.c:mat_ed_num3:n_sibs +
                            (1|Corpus),
                            data = adsratedata)
-anova(ads.mph.age.myr, ads.mph.age.myr.agecgdnsb)
-                    # no improvement
+anova(ads.mph.age, ads.mph.age.agemednsb)
+                    # no improvement; throws convergence warning
 
-ads.mph.age.myr.agemednsb <- lmer(ads.minph.lg ~ agem.c + mother_dob +
-                           agem.c:mat_ed_num3:number_older_sibs +
+ads.mph.age.cgdmednsb <- lmer(ads.minph.lg ~ agem.c +
+                           chi_gender:mat_ed_num3:n_sibs +
                            (1|Corpus),
                            data = adsratedata)
-anova(ads.mph.age.myr, ads.mph.age.myr.agemednsb)
+anova(ads.mph.age, ads.mph.age.cgdmednsb)
                     # no improvement
-
-ads.mph.age.myr.cgdmednsb <- lmer(ads.minph.lg ~ agem.c + mother_dob +
-                           chi_gender:mat_ed_num3:number_older_sibs +
-                           (1|Corpus),
-                           data = adsratedata)
-anova(ads.mph.age.myr, ads.mph.age.myr.cgdmednsb)
-                    # no improvement
-
 
 # Best model: ####
-ads.mph.best <- lmer(ads.minph.lg ~ agem.c + mother_dob +
-                 (1|Corpus),
-                 data = adsratedata)
+ads.mph.best <- ads.mph.age
 
 
 #### MODEL 2: ADS MinPH by speaker gender (2 datapoints per child) ##########
 # 0. Random effects only (base model)
 ads.agd.bas <-  lmer(ads.minph.lg ~ (1|Corpus) + (1|ID),
-                  data = adsratedata.agd)
-
+                     data = adsratedata.agd)
 
 # 1. Single-predictor effects ####
 # Significant contributors: speaker gender
@@ -197,12 +153,7 @@ ads.agd.mph.med <-  lmer(ads.minph.lg ~ mat_ed_num3 +
 anova(ads.agd.bas, ads.agd.mph.med)
                 # no improvement
 
-ads.agd.mph.myr <-  lmer(ads.minph.lg ~ mother_dob +
-                       (1|Corpus) + (1|ID), data = adsratedata.agd)
-anova(ads.agd.bas, ads.agd.mph.myr)
-                # only marginal improvement (p = 0.08504)
-
-ads.agd.mph.nsb <-  lmer(ads.minph.lg ~ number_older_sibs +
+ads.agd.mph.nsb <-  lmer(ads.minph.lg ~ n_sibs +
                        (1|Corpus) + (1|ID), data = adsratedata.agd)
 anova(ads.agd.bas, ads.agd.mph.nsb)
                 # no improvement
@@ -211,7 +162,6 @@ anova(ads.agd.bas, ads.agd.mph.nsb)
 # comparison with additional 2-way and 3-way effects
 ads.agd.mph.age.agd <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
                        (1|Corpus) + (1|ID), data = adsratedata.agd)
-
 
 # 2. Try out 2-way interactions ####
 # Significant additional interaction of child age and speaker gender
@@ -235,14 +185,8 @@ ads.agd.mph.age.agd.agemed <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
 anova(ads.agd.mph.age.agd, ads.agd.mph.age.agd.agemed)
                 # no improvement
 
-ads.agd.mph.age.agd.agemyr <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
-                             agem.c:mother_dob +
-                       (1|Corpus) + (1|ID), data = adsratedata.agd)
-anova(ads.agd.mph.age.agd, ads.agd.mph.age.agd.agemyr)
-                # no improvement
-
 ads.agd.mph.age.agd.agensb <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
-                             agem.c:number_older_sibs +
+                             agem.c:n_sibs +
                        (1|Corpus) + (1|ID), data = adsratedata.agd)
 anova(ads.agd.mph.age.agd, ads.agd.mph.age.agd.agensb)
                 # no improvement
@@ -259,17 +203,11 @@ ads.agd.mph.age.agd.cgdmed <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
 anova(ads.agd.mph.age.agd, ads.agd.mph.age.agd.cgdmed)
                 # no improvement
 
-ads.agd.mph.age.agd.cgdmyr <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
-                             chi_gender:mother_dob +
-                       (1|Corpus) + (1|ID), data = adsratedata.agd)
-anova(ads.agd.mph.age.agd, ads.agd.mph.age.agd.cgdmyr)
-                # no improvement
-
 ads.agd.mph.age.agd.cgdnsb <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
-                             chi_gender:number_older_sibs +
+                             chi_gender:n_sibs +
                        (1|Corpus) + (1|ID), data = adsratedata.agd)
 anova(ads.agd.mph.age.agd, ads.agd.mph.age.agd.cgdnsb)
-                # only marginal improvement (p = 0.06532)
+                # only marginal improvement (p = 0.0924)
 
 ads.agd.mph.age.agd.agdmed <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
                              adu_gender_m:mat_ed_num3 +
@@ -277,33 +215,21 @@ ads.agd.mph.age.agd.agdmed <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
 anova(ads.agd.mph.age.agd, ads.agd.mph.age.agd.agdmed)
                 # no improvement
 
-ads.agd.mph.age.agd.agdmyr <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
-                             adu_gender_m:mother_dob +
-                       (1|Corpus) + (1|ID), data = adsratedata.agd)
-anova(ads.agd.mph.age.agd, ads.agd.mph.age.agd.agdmyr)
-                # no improvement
-
 ads.agd.mph.age.agd.agdnsb <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
-                             adu_gender_m:number_older_sibs +
+                             adu_gender_m:n_sibs +
                        (1|Corpus) + (1|ID), data = adsratedata.agd)
 anova(ads.agd.mph.age.agd, ads.agd.mph.age.agd.agdnsb)
-                # only marginal improvement (p = 0.06095)
-
-# No model with mat_ed_num3:mother_dob because they are correlated
+                # only marginal improvement (p = 0.06321)
 
 ads.agd.mph.age.agd.mednsb <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
-                             mat_ed_num3:number_older_sibs +
+                             mat_ed_num3:n_sibs +
                        (1|Corpus) + (1|ID), data = adsratedata.agd)
 anova(ads.agd.mph.age.agd, ads.agd.mph.age.agd.mednsb)
                 # no improvement
 
-# No model with mother_dob:number_older_sibs because they are correlated
-
 # Simplify syntax of best model:
 ads.agd.mph.ageXagd <-  lmer(ads.minph.lg ~ agem.c * adu_gender_m +
                        (1|Corpus) + (1|ID), data = adsratedata.agd)
-
-
 
 # 3. Try out three-way interactions ####
 # Nothing to add
@@ -322,15 +248,8 @@ ads.agd.mph.ageXagd.agecgdmed <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
 anova(ads.agd.mph.ageXagd, ads.agd.mph.ageXagd.agecgdmed)
                     # no improvement
 
-ads.agd.mph.ageXagd.agecgdmyr <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
-                           agem.c:chi_gender:mother_dob +
-                           (1|Corpus) + (1|ID),
-                           data = adsratedata.agd)
-anova(ads.agd.mph.ageXagd, ads.agd.mph.ageXagd.agecgdmyr)
-                    # no improvement
-
 ads.agd.mph.ageXagd.agecgdnsb <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
-                           agem.c:chi_gender:number_older_sibs +
+                           agem.c:chi_gender:n_sibs +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd)
 anova(ads.agd.mph.ageXagd, ads.agd.mph.ageXagd.agecgdnsb)
@@ -343,22 +262,15 @@ ads.agd.mph.ageXagd.ageagdmed <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
 anova(ads.agd.mph.ageXagd, ads.agd.mph.ageXagd.ageagdmed)
                     # no improvement
 
-ads.agd.mph.ageXagd.ageagdmyr <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
-                           agem.c:adu_gender_m:mother_dob +
-                           (1|Corpus) + (1|ID),
-                           data = adsratedata.agd)
-anova(ads.agd.mph.ageXagd, ads.agd.mph.ageXagd.ageagdmyr)
-                    # no improvement
-
 ads.agd.mph.ageXagd.ageagdnsb <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
-                           agem.c:adu_gender_m:number_older_sibs +
+                           agem.c:adu_gender_m:n_sibs +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd)
 anova(ads.agd.mph.ageXagd, ads.agd.mph.ageXagd.ageagdnsb)
                     # no improvement
 
 ads.agd.mph.ageXagd.agemednsb <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
-                           agem.c:mat_ed_num3:number_older_sibs +
+                           agem.c:mat_ed_num3:n_sibs +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd)
 anova(ads.agd.mph.ageXagd, ads.agd.mph.ageXagd.agemednsb)
@@ -371,39 +283,29 @@ ads.agd.mph.ageXagd.cgdagdmed <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
 anova(ads.agd.mph.ageXagd, ads.agd.mph.ageXagd.cgdagdmed)
                     # no improvement
 
-ads.agd.mph.ageXagd.cgdagdmyr <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
-                           chi_gender:adu_gender_m:mother_dob +
-                           (1|Corpus) + (1|ID),
-                           data = adsratedata.agd)
-anova(ads.agd.mph.ageXagd, ads.agd.mph.ageXagd.cgdagdmyr)
-                    # no improvement
-
 ads.agd.mph.ageXagd.cgdagdnsb <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
-                           chi_gender:adu_gender_m:number_older_sibs +
+                           chi_gender:adu_gender_m:n_sibs +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd)
 anova(ads.agd.mph.ageXagd, ads.agd.mph.ageXagd.cgdagdnsb)
                     # no improvement
 
 ads.agd.mph.ageXagd.cgdmednsb <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
-                           chi_gender:mat_ed_num3:number_older_sibs +
+                           chi_gender:mat_ed_num3:n_sibs +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd)
 anova(ads.agd.mph.ageXagd, ads.agd.mph.ageXagd.cgdmednsb)
                     # no improvement
 
 ads.agd.mph.ageXagd.agdmednsb <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
-                           adu_gender_m:mat_ed_num3:number_older_sibs +
+                           adu_gender_m:mat_ed_num3:n_sibs +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd)
 anova(ads.agd.mph.ageXagd, ads.agd.mph.ageXagd.agdmednsb)
                     # no improvement
 
-
 # Best model: ####
-ads.agd.mph.best <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
-                 (1|Corpus) + (1|ID),
-                 data = adsratedata.agd)
+ads.agd.mph.best <- ads.agd.mph.ageXagd
 
 
 #### MODEL 3: ADS MinPH by speaker gender w/ exclusions ##########
@@ -411,7 +313,6 @@ ads.agd.mph.best <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
 # 0. Random effects only (base model)
 ads.agd.s.bas <-  lmer(ads.minph.lg ~ (1|Corpus) + (1|ID),
                        data = adsratedata.agd.sub)
-
 
 # 1. Single-predictor effects ####
 # Significant contributors: speaker gender
@@ -438,12 +339,7 @@ ads.agd.s.mph.med <-  lmer(ads.minph.lg ~ mat_ed_num3 +
 anova(ads.agd.s.bas, ads.agd.s.mph.med)
                 # no improvement
 
-ads.agd.s.mph.myr <-  lmer(ads.minph.lg ~ mother_dob +
-                       (1|Corpus) + (1|ID), data = adsratedata.agd.sub)
-anova(ads.agd.s.bas, ads.agd.s.mph.myr)
-                # no improvement
-
-ads.agd.s.mph.nsb <-  lmer(ads.minph.lg ~ number_older_sibs +
+ads.agd.s.mph.nsb <-  lmer(ads.minph.lg ~ n_sibs +
                        (1|Corpus) + (1|ID), data = adsratedata.agd.sub)
 anova(ads.agd.s.bas, ads.agd.s.mph.nsb)
                 # no improvement
@@ -453,10 +349,8 @@ anova(ads.agd.s.bas, ads.agd.s.mph.nsb)
 ads.agd.s.mph.age.agd <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
                        (1|Corpus) + (1|ID), data = adsratedata.agd.sub)
 
-
 # 2. Try out 2-way interactions ####
 # Significant additional interaction of child age and speaker gender
-# and of speaker gender and the number of older siblings
 # Individual models ####
 ads.agd.s.mph.age.agd.agecgd <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
                              agem.c:chi_gender +
@@ -477,14 +371,8 @@ ads.agd.s.mph.age.agd.agemed <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
 anova(ads.agd.s.mph.age.agd, ads.agd.s.mph.age.agd.agemed)
                 # no improvement
 
-ads.agd.s.mph.age.agd.agemyr <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
-                             agem.c:mother_dob +
-                       (1|Corpus) + (1|ID), data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.age.agd, ads.agd.s.mph.age.agd.agemyr)
-                # no improvement
-
 ads.agd.s.mph.age.agd.agensb <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
-                             agem.c:number_older_sibs +
+                             agem.c:n_sibs +
                        (1|Corpus) + (1|ID), data = adsratedata.agd.sub)
 anova(ads.agd.s.mph.age.agd, ads.agd.s.mph.age.agd.agensb)
                 # no improvement
@@ -501,17 +389,11 @@ ads.agd.s.mph.age.agd.cgdmed <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
 anova(ads.agd.s.mph.age.agd, ads.agd.s.mph.age.agd.cgdmed)
                 # no improvement
 
-ads.agd.s.mph.age.agd.cgdmyr <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
-                             chi_gender:mother_dob +
-                       (1|Corpus) + (1|ID), data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.age.agd, ads.agd.s.mph.age.agd.cgdmyr)
-                # no improvement
-
 ads.agd.s.mph.age.agd.cgdnsb <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
-                             chi_gender:number_older_sibs +
+                             chi_gender:n_sibs +
                        (1|Corpus) + (1|ID), data = adsratedata.agd.sub)
 anova(ads.agd.s.mph.age.agd, ads.agd.s.mph.age.agd.cgdnsb)
-                # only marginal improvement (p = 0.06523)
+                # only marginal improvement (p = 0.09536)
 
 ads.agd.s.mph.age.agd.agdmed <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
                              adu_gender_m:mat_ed_num3 +
@@ -519,164 +401,94 @@ ads.agd.s.mph.age.agd.agdmed <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
 anova(ads.agd.s.mph.age.agd, ads.agd.s.mph.age.agd.agdmed)
                 # no improvement
 
-ads.agd.s.mph.age.agd.agdmyr <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
-                             adu_gender_m:mother_dob +
-                       (1|Corpus) + (1|ID), data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.age.agd, ads.agd.s.mph.age.agd.agdmyr)
-                # no improvement
-
 ads.agd.s.mph.age.agd.agdnsb <- lmer(ads.minph.lg ~ agem.c + adu_gender_m +
-                             adu_gender_m:number_older_sibs +
+                             adu_gender_m:n_sibs +
                        (1|Corpus) + (1|ID), data = adsratedata.agd.sub)
-                # effects of child age, speaker gender, and a two-way
-                # interaction of speaker gender and # older sibs
 anova(ads.agd.s.mph.age.agd, ads.agd.s.mph.age.agd.agdnsb)
-                # improved over previous model
-
-# No model with mat_ed_num3:mother_dob because they are correlated
+                # only marginal improvement (p = 0.05267)
 
 ads.agd.s.mph.age.agd.mednsb <-  lmer(ads.minph.lg ~ agem.c + adu_gender_m +
-                             mat_ed_num3:number_older_sibs +
+                             mat_ed_num3:n_sibs +
                        (1|Corpus) + (1|ID), data = adsratedata.agd.sub)
 anova(ads.agd.s.mph.age.agd, ads.agd.s.mph.age.agd.mednsb)
                 # no improvement
 
-# No model with mother_dob:number_older_sibs because they are correlated
-
 # Simplify syntax of best model:
-ads.agd.s.mph.ageXagd.agdnsb <-  lmer(ads.minph.lg ~ agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
+ads.agd.s.mph.ageXagd <-  lmer(ads.minph.lg ~ agem.c * adu_gender_m +
                        (1|Corpus) + (1|ID), data = adsratedata.agd.sub)
-
 
 # 3. Try out three-way interactions ####
 # Nothing to add
 # Individual models ####
-ads.agd.s.mph.ageXagd.agdnsb.agecgdagd <- lmer(ads.minph.lg ~
-                           agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
+ads.agd.s.mph.ageXagd.agecgdagd <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
                            agem.c:chi_gender:adu_gender_m +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.ageXagd.agdnsb, ads.agd.s.mph.ageXagd.agdnsb.agecgdagd)
+anova(ads.agd.s.mph.ageXagd, ads.agd.s.mph.ageXagd.agecgdagd)
                     # no improvement
 
-ads.agd.s.mph.ageXagd.agdnsb.agecgdmed <- lmer(ads.minph.lg ~
-                           agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
+ads.agd.s.mph.ageXagd.agecgdmed <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
                            agem.c:chi_gender:mat_ed_num3 +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.ageXagd.agdnsb, ads.agd.s.mph.ageXagd.agdnsb.agecgdmed)
+anova(ads.agd.s.mph.ageXagd, ads.agd.s.mph.ageXagd.agecgdmed)
                     # no improvement
 
-ads.agd.s.mph.ageXagd.agdnsbagecgdmyr <- lmer(ads.minph.lg ~
-                           agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
-                           agem.c:chi_gender:mother_dob +
+ads.agd.s.mph.ageXagd.agecgdnsb <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
+                           agem.c:chi_gender:n_sibs +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.ageXagd.agdnsb, ads.agd.s.mph.ageXagd.agdnsbagecgdmyr)
+anova(ads.agd.s.mph.ageXagd, ads.agd.s.mph.ageXagd.agecgdnsb)
                     # no improvement
 
-ads.agd.s.mph.ageXagd.agdnsb.agecgdnsb <- lmer(ads.minph.lg ~
-                           agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
-                           agem.c:chi_gender:number_older_sibs +
-                           (1|Corpus) + (1|ID),
-                           data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.ageXagd.agdnsb, ads.agd.s.mph.ageXagd.agdnsb.agecgdnsb)
-                    # no improvement
-
-ads.agd.s.mph.ageXagd.agdnsb.ageagdmed <- lmer(ads.minph.lg ~
-                           agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
+ads.agd.s.mph.ageXagd.ageagdmed <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
                            agem.c:adu_gender_m:mat_ed_num3 +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.ageXagd.agdnsb, ads.agd.s.mph.ageXagd.agdnsb.ageagdmed)
+anova(ads.agd.s.mph.ageXagd, ads.agd.s.mph.ageXagd.ageagdmed)
                     # no improvement
 
-ads.agd.s.mph.ageXagd.agdnsb.ageagdmyr <- lmer(ads.minph.lg ~
-                           agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
-                           agem.c:adu_gender_m:mother_dob +
+ads.agd.s.mph.ageXagd.ageagdnsb <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
+                           agem.c:adu_gender_m:n_sibs +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.ageXagd.agdnsb, ads.agd.s.mph.ageXagd.agdnsb.ageagdmyr)
+anova(ads.agd.s.mph.ageXagd, ads.agd.s.mph.ageXagd.ageagdnsb)
                     # no improvement
 
-ads.agd.s.mph.ageXagd.agdnsbageagdnsb <- lmer(ads.minph.lg ~
-                           agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
-                           agem.c:adu_gender_m:number_older_sibs +
+ads.agd.s.mph.ageXagd.agemednsb <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
+                           agem.c:mat_ed_num3:n_sibs +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.ageXagd.agdnsb, ads.agd.s.mph.ageXagd.agdnsbageagdnsb)
+anova(ads.agd.s.mph.ageXagd, ads.agd.s.mph.ageXagd.agemednsb)
                     # no improvement
 
-ads.agd.s.mph.ageXagd.agdnsb.agemednsb <- lmer(ads.minph.lg ~
-                           agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
-                           agem.c:mat_ed_num3:number_older_sibs +
-                           (1|Corpus) + (1|ID),
-                           data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.ageXagd.agdnsb, ads.agd.s.mph.ageXagd.agdnsb.agemednsb)
-                    # no improvement
-
-ads.agd.s.mph.ageXagd.agdnsb.cgdagdmed <- lmer(ads.minph.lg ~
-                           agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
+ads.agd.s.mph.ageXagd.cgdagdmed <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
                            chi_gender:adu_gender_m:mat_ed_num3 +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.ageXagd.agdnsb, ads.agd.s.mph.ageXagd.agdnsb.cgdagdmed)
+anova(ads.agd.s.mph.ageXagd, ads.agd.s.mph.ageXagd.cgdagdmed)
                     # no improvement
 
-ads.agd.s.mph.ageXagd.agdnsb.cgdagdmyr <- lmer(ads.minph.lg ~ 
-                           agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
-                           chi_gender:adu_gender_m:mother_dob +
+ads.agd.s.mph.ageXagd.cgdagdnsb <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
+                           chi_gender:adu_gender_m:n_sibs +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.ageXagd.agdnsb, ads.agd.s.mph.ageXagd.agdnsb.cgdagdmyr)
+anova(ads.agd.s.mph.ageXagd, ads.agd.s.mph.ageXagd.cgdagdnsb)
                     # no improvement
 
-ads.agd.s.mph.ageXagd.agdnsb.cgdagdnsb <- lmer(ads.minph.lg ~
-                           agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
-                           chi_gender:adu_gender_m:number_older_sibs +
+ads.agd.s.mph.ageXagd.cgdmednsb <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
+                           chi_gender:mat_ed_num3:n_sibs +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.ageXagd.agdnsb, ads.agd.s.mph.ageXagd.agdnsb.cgdagdnsb)
+anova(ads.agd.s.mph.ageXagd, ads.agd.s.mph.ageXagd.cgdmednsb)
                     # no improvement
 
-ads.agd.s.mph.ageXagd.agdnsb.cgdmednsb <- lmer(ads.minph.lg ~
-                           agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
-                           chi_gender:mat_ed_num3:number_older_sibs +
+ads.agd.s.mph.ageXagd.agdmednsb <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
+                           adu_gender_m:mat_ed_num3:n_sibs +
                            (1|Corpus) + (1|ID),
                            data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.ageXagd.agdnsb, ads.agd.s.mph.ageXagd.agdnsb.cgdmednsb)
+anova(ads.agd.s.mph.ageXagd, ads.agd.s.mph.ageXagd.agdmednsb)
                     # no improvement
-
-ads.agd.s.mph.ageXagd.agdnsb.agdmednsb <- lmer(ads.minph.lg ~
-                           agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
-                           adu_gender_m:mat_ed_num3:number_older_sibs +
-                           (1|Corpus) + (1|ID),
-                           data = adsratedata.agd.sub)
-anova(ads.agd.s.mph.ageXagd.agdnsb, ads.agd.s.mph.ageXagd.agdnsb.agdmednsb)
-                    # no improvement
-
 
 # Best model: ####
-ads.agd.s.mph.best <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
-                             adu_gender_m:number_older_sibs +
-                            (1|Corpus) + (1|ID),
-                            data = adsratedata.agd.sub)
-
-# Matching model to non-logged best model: ####
-ads.agd.s.mph.match <- lmer(ads.minph.lg ~ agem.c * adu_gender_m +
-                            (1|Corpus) + (1|ID),
-                            data = adsratedata.agd.sub)
+ads.agd.s.mph.best <- ads.agd.s.mph.ageXagd

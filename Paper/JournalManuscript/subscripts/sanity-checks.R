@@ -25,6 +25,7 @@ relcoders_gender <- blkall %>%
   t(.)
 kripp.alpha(relcoders_gender)
 
+
 ################################################################################
 # PREDICTOR CORRELATIONS
 # Maternal age and maternal education: Significantly correlated

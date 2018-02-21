@@ -4,7 +4,6 @@
 # agem.c (or age.bin or age.qrt)
 # chi_gender
 # mat_ed_num3
-# mother_dob
 # n_sibs
 
 # Notes:
@@ -44,7 +43,6 @@ fcd.mph.nsb <-  lmer(cds.minph ~ n_sibs +
                        (1|Corpus), data = f.cdsrd)
 anova(fcd.bas, fcd.mph.nsb)
                 # no improvement
-
 
 # 2. Try out 2-way interactions ####
 # Nothing to add
@@ -91,7 +89,6 @@ fcd.mph.mednsb <- lmer(cds.minph ~
 anova(fcd.bas, fcd.mph.mednsb)
                     # no improvement
 
-
 # 3. Try out three-way interactions ####
 # Nothing to add
 # Individual models ####
@@ -123,17 +120,13 @@ fcd.mph.cgdmednsb <- lmer(cds.minph ~
 anova(fcd.bas, fcd.mph.cgdmednsb)
                     # no improvement; throws convergence warning
 
-
 # Best model: ####
-fcd.mph.best <- lmer(cds.minph ~
-                 (1|Corpus),
-                 data = f.cdsrd)
+fcd.mph.best <- fcd.bas
 
 
 # MALES ####
 # 0. Random effects only (base model) ####
 mcd.bas <-  lmer(cds.minph ~ (1|Corpus), data = m.cdsrd)
-
 
 # 1. Single-predictor effects ####
 # Significant contributors: adult gender
@@ -157,7 +150,6 @@ mcd.mph.nsb <-  lmer(cds.minph ~ n_sibs +
                        (1|Corpus), data = m.cdsrd)
 anova(mcd.bas, mcd.mph.nsb)
                 # no improvement
-
 
 # 2. Try out 2-way interactions ####
 # Nothing to add
@@ -204,7 +196,6 @@ mcd.mph.mednsb <- lmer(cds.minph ~
 anova(mcd.bas, mcd.mph.mednsb)
                     # no improvement
 
-
 # 3. Try out three-way interactions ####
 # Nothing to add
 # Individual models ####
@@ -236,9 +227,5 @@ mcd.mph.cgdmednsb <- lmer(cds.minph ~
 anova(mcd.bas, mcd.mph.cgdmednsb)
                     # no improvement
 
-
-
 # Best model: ####
-mcd.mph.best <- lmer(cds.minph ~
-                 (1|Corpus),
-                 data = m.cdsrd)
+mcd.mph.best <- mcd.bas

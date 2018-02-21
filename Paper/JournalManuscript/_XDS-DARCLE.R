@@ -240,11 +240,6 @@ ADS.minph.mdl.agd.s.F
 ADS.minph.mdl.agd.s.M <- tidy(mad.mph.best)
 ADS.minph.mdl.agd.s.M
 
-# When the best ADS logged model wasn't the same:
-if (models == "logged/") {
-  ADS.minph.mdl.agd.m <- tidy(ads.agd.s.mph.match)
-}
-
 # CDS minutes per hour overall
 CDS.minph.mdl <- tidy(cds.mph.best)
 CDS.minph.mdl
@@ -392,6 +387,40 @@ cds.prp.dsm.all <-  propCDS %>%
                           sd.mph = sd(prp.cds),
                           min.mph = min(prp.cds),
                           max.mph = max(prp.cds))
+
+
+################################################################################
+# # CDS/ADS correlations ####
+# overall scores
+cdsratedata.scores <- cdsratedata %>% dplyr::select(ID, cds.min)
+propCDS.scores <- propCDS %>% dplyr::select(ID, prp.cds)
+by.rec.scores <- adsratedata %>%
+  left_join(cdsratedata.scores) %>%
+  left_join(propCDS.scores)
+
+cor.test(by.rec.scores$cds.min, by.rec.scores$ads.min,
+         method = "spearman")
+
+cor.test(by.rec.scores$cds.min, by.rec.scores$prp.cds,
+         method = "spearman")
+
+cor.test(by.rec.scores$ads.min, by.rec.scores$prp.cds,
+         method = "spearman")
+
+
+# split by talker gender
+cdsratedata.agd.scores <- cdsratedata.agd %>% dplyr::select(ID, adu_gender_m, cds.min)
+propCDS.agd.scores <- propCDS.agd %>% dplyr::select(ID, adu_gender_m, prp.cds)
+by.rec.scores.agd <- adsratedata.agd %>%
+  left_join(cdsratedata.agd.scores) %>%
+  left_join(propCDS.agd.scores)
+
+# split by talker gender, not including zero cases
+cdsratedata.agd.s.scores <- cdsratedata.agd.sub %>% dplyr::select(ID, adu_gender_m, cds.min)
+propCDS.agd.s.scores <- propCDS.agd.sub %>% dplyr::select(ID, adu_gender_m, prp.cds)
+by.rec.scores.agd.sub <- adsratedata.agd.sub %>%
+  left_join(cdsratedata.agd.s.scores) %>%
+  left_join(propCDS.agd.s.scores)
 
 
 ################################################################################

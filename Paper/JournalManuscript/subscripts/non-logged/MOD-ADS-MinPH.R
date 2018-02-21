@@ -4,7 +4,6 @@
 # agem.c
 # chi_gender
 # mat_ed_num3
-# mother_dob
 # n_sibs
 # adu_gender_m (for adsratedata.agd and adsratedata.agd.sub)
 
@@ -17,7 +16,6 @@
 #### MODEL 1: ADS MinPH overall (1 datapoint per child) ##########
 # 0. Random effects only (base model) ####
 ads.bas <-  lmer(ads.minph ~ (1|Corpus), data = adsratedata)
-
 
 # 1. Single-predictor effects ####
 # Significant contributors: child age and maternal age
@@ -45,98 +43,90 @@ anova(ads.bas, ads.mph.nsb)
 
 # Continue with child age as base model for comparison
 
-
 # 2. Try out 2-way interactions ####
 # Nothing to add
 # Individual models ####
-ads.mph.age.agecgd <- lmer(ads.minph ~ agem.c + mother_dob +
+ads.mph.age.agecgd <- lmer(ads.minph ~ agem.c +
                              agem.c:chi_gender +
                            (1|Corpus),
                            data = adsratedata)
 anova(ads.mph.age, ads.mph.age.agecgd)
                     # no improvement
 
-ads.mph.age.agemed <- lmer(ads.minph ~ agem.c + mother_dob +
+ads.mph.age.agemed <- lmer(ads.minph ~ agem.c +
                              agem.c:mat_ed_num3 +
                            (1|Corpus),
                            data = adsratedata)
 anova(ads.mph.age, ads.mph.age.agemed)
                     # no improvement
 
-ads.mph.age.agensb <- lmer(ads.minph ~ agem.c + mother_dob +
+ads.mph.age.agensb <- lmer(ads.minph ~ agem.c +
                              agem.c:n_sibs +
                            (1|Corpus),
                            data = adsratedata)
 anova(ads.mph.age, ads.mph.age.agensb)
                     # no improvement
 
-ads.mph.age.cgdmed <- lmer(ads.minph ~ agem.c + mother_dob +
+ads.mph.age.cgdmed <- lmer(ads.minph ~ agem.c +
                              chi_gender:mat_ed_num3 +
                            (1|Corpus),
                            data = adsratedata)
 anova(ads.mph.age, ads.mph.age.cgdmed)
                     # no improvement
 
-ads.mph.age.cgdnsb <- lmer(ads.minph ~ agem.c + mother_dob +
+ads.mph.age.cgdnsb <- lmer(ads.minph ~ agem.c +
                              chi_gender:n_sibs +
                            (1|Corpus),
                            data = adsratedata)
 anova(ads.mph.age, ads.mph.age.cgdnsb)
                     # no improvement
 
-ads.mph.age.mednsb <- lmer(ads.minph ~ agem.c + mother_dob +
+ads.mph.age.mednsb <- lmer(ads.minph ~ agem.c +
                              mat_ed_num3:n_sibs +
                            (1|Corpus),
                            data = adsratedata)
 anova(ads.mph.age, ads.mph.age.mednsb)
                     # no improvement
 
-
-
 # 3. Try out three-way interactions ####
 # Nothing to add
 # Individual models ####
-ads.mph.age.agecgdmed <- lmer(ads.minph ~ agem.c + mother_dob +
+ads.mph.age.agecgdmed <- lmer(ads.minph ~ agem.c +
                            agem.c:chi_gender:mat_ed_num3 +
                            (1|Corpus),
                            data = adsratedata)
 anova(ads.mph.age, ads.mph.age.agecgdmed)
                     # no improvement
 
-ads.mph.age.agecgdnsb <- lmer(ads.minph ~ agem.c + mother_dob +
+ads.mph.age.agecgdnsb <- lmer(ads.minph ~ agem.c +
                            agem.c:chi_gender:n_sibs +
                            (1|Corpus),
                            data = adsratedata)
 anova(ads.mph.age, ads.mph.age.agecgdnsb)
                     # no improvement
 
-ads.mph.age.agemednsb <- lmer(ads.minph ~ agem.c + mother_dob +
+ads.mph.age.agemednsb <- lmer(ads.minph ~ agem.c +
                            agem.c:mat_ed_num3:n_sibs +
                            (1|Corpus),
                            data = adsratedata)
 anova(ads.mph.age, ads.mph.age.agemednsb)
-                    # no improvement
+                    # no improvement; throws convergence warning
 
-ads.mph.age.cgdmednsb <- lmer(ads.minph ~ agem.c + mother_dob +
+ads.mph.age.cgdmednsb <- lmer(ads.minph ~ agem.c +
                            chi_gender:mat_ed_num3:n_sibs +
                            (1|Corpus),
                            data = adsratedata)
 anova(ads.mph.age, ads.mph.age.cgdmednsb)
                     # no improvement
 
-
-
 # Best model: ####
-ads.mph.best <- lmer(ads.minph ~ agem.c +
-                 (1|Corpus),
-                 data = adsratedata)
+ads.mph.best <- ads.mph.age
 
 
 #### MODEL 2: ADS MinPH by speaker gender (2 datapoints per child) ##########
 # 0. Random effects only (base model)
 ads.agd.bas <-  lmer(ads.minph ~ (1|Corpus) + (1|ID),
                      data = adsratedata.agd)
-
 
 # 1. Single-predictor effects ####
 # Significant contributors: speaker gender
@@ -172,7 +162,6 @@ anova(ads.agd.bas, ads.agd.mph.nsb)
 # comparison with additional 2-way and 3-way effects
 ads.agd.mph.age.agd <-  lmer(ads.minph ~ agem.c + adu_gender_m +
                        (1|Corpus) + (1|ID), data = adsratedata.agd)
-
 
 # 2. Try out 2-way interactions ####
 # Significant additional interaction of child age and speaker gender
@@ -238,12 +227,9 @@ ads.agd.mph.age.agd.mednsb <-  lmer(ads.minph ~ agem.c + adu_gender_m +
 anova(ads.agd.mph.age.agd, ads.agd.mph.age.agd.mednsb)
                 # no improvement
 
-
 # Simplify syntax of best model:
 ads.agd.mph.ageXagd <-  lmer(ads.minph ~ agem.c * adu_gender_m +
                        (1|Corpus) + (1|ID), data = adsratedata.agd)
-
-
 
 # 3. Try out three-way interactions ####
 # Nothing to add
@@ -318,11 +304,8 @@ ads.agd.mph.ageXagd.agdmednsb <- lmer(ads.minph ~ agem.c * adu_gender_m +
 anova(ads.agd.mph.ageXagd, ads.agd.mph.ageXagd.agdmednsb)
                     # no improvement
 
-
 # Best model: ####
-ads.agd.mph.best <- lmer(ads.minph ~ agem.c * adu_gender_m +
-                 (1|Corpus) + (1|ID),
-                 data = adsratedata.agd)
+ads.agd.mph.best <- ads.agd.mph.ageXagd
 
 
 #### MODEL 3: ADS MinPH by speaker gender w/ exclusions ##########
@@ -330,7 +313,6 @@ ads.agd.mph.best <- lmer(ads.minph ~ agem.c * adu_gender_m +
 # 0. Random effects only (base model)
 ads.agd.s.bas <-  lmer(ads.minph ~ (1|Corpus) + (1|ID),
                        data = adsratedata.agd.sub)
-
 
 # 1. Single-predictor effects ####
 # Significant contributors: speaker gender
@@ -366,7 +348,6 @@ anova(ads.agd.s.bas, ads.agd.s.mph.nsb)
 # comparison with additional 2-way and 3-way effects
 ads.agd.s.mph.age.agd <-  lmer(ads.minph ~ agem.c + adu_gender_m +
                        (1|Corpus) + (1|ID), data = adsratedata.agd.sub)
-
 
 # 2. Try out 2-way interactions ####
 # Significant additional interaction of child age and speaker gender
@@ -432,11 +413,9 @@ ads.agd.s.mph.age.agd.mednsb <-  lmer(ads.minph ~ agem.c + adu_gender_m +
 anova(ads.agd.s.mph.age.agd, ads.agd.s.mph.age.agd.mednsb)
                 # no improvement
 
-
 # Simplify syntax of best model:
 ads.agd.s.mph.ageXagd <-  lmer(ads.minph ~ agem.c * adu_gender_m +
                        (1|Corpus) + (1|ID), data = adsratedata.agd.sub)
-
 
 # 3. Try out three-way interactions ####
 # Nothing to add
@@ -511,8 +490,5 @@ ads.agd.s.mph.ageXagd.agdmednsb <- lmer(ads.minph ~ agem.c * adu_gender_m +
 anova(ads.agd.s.mph.ageXagd, ads.agd.s.mph.ageXagd.agdmednsb)
                     # no improvement
 
-
 # Best model: ####
-ads.agd.s.mph.best <- lmer(ads.minph ~ agem.c * adu_gender_m +
-                 (1|Corpus) + (1|ID),
-                 data = adsratedata.agd.sub)
+ads.agd.s.mph.best <- ads.agd.s.mph.ageXagd
