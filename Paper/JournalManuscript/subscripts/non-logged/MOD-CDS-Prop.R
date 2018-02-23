@@ -298,9 +298,6 @@ anova(cds.prp.ageXagd, cds.prp.agd.age.agd.ageagd.agdmednsb)
 # Best model: ####
 cds.prp.agd.best <- cds.prp.ageXagd
 
-cds.prp.agd.best.parallel <- lmer(prp.cds ~ agem.c + adu_gender_m +
-                 (1|Corpus) + (1|ID),
-                 data = propCDS.agd)
 
 
 #### MODEL 3: Proportion CDS by speaker gender gender w/ exclusions ##########
