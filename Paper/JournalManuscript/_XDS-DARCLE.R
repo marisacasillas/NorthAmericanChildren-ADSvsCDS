@@ -403,6 +403,9 @@ cor.test(by.rec.scores$cds.min, by.rec.scores$ads.min,
 
 
 ################################################################################
+# NB: ANALYSES OF CDS UTT LENGTH ARE NOT VETTED OR UP-TO-DATE (do not use)
+# Needs updated model predictors and model-building style in line with the rest
+################################################################################
 # # CDS utterance length (complexity) ####
 # CDSutts <-  modeldata.excl %>%
 #             filter(label_m == "CDS") %>%

@@ -24,6 +24,7 @@ results.plot.path <- "plots/results/"
 support.plot.path <- "plots/supporting/"
 scripts <- "subscripts/"
 models <- "non-logged/"
+#models <- "logged/"
 
 
 # Basic plotting theme settings
