@@ -2,9 +2,10 @@
 
 # ADS minPH ####
 ads.mph.best.max <- lmer(ads.minph ~ agem.c +
-                     (1 + chi_gender * agem.c * n_sibs|Corpus),
+                     (1 + chi_gender * agem.c + agem.c * n_sibs|Corpus),
                      data = adsratedata, REML = T,
-                     control = lmerControl(optCtrl = list(maxfun = 500000)))
+                     control = lmerControl(optCtrl = list(maxfun = 500000),
+                                                 optimizer = "bobyqa"))
 
 ads.agd.mph.best.max <- lmer(ads.minph ~ agem.c * adu_gender_m +
                          (1 + agem.c * n_sibs + chi_gender * adu_gender_m +
@@ -13,7 +14,8 @@ ads.agd.mph.best.max <- lmer(ads.minph ~ agem.c * adu_gender_m +
                          (1|ID),
                          data = adsratedata.agd,
                          REML = T,
-                         control = lmerControl(optCtrl = list(maxfun = 500000)))
+                         control = lmerControl(optCtrl = list(maxfun = 500000),
+                                                 optimizer = "bobyqa"))
 
 ads.agd.s.mph.best.max <- lmer(ads.minph ~ agem.c * adu_gender_m +
                            (1 + chi_gender * agem.c + adu_gender_m|Corpus) +
@@ -54,10 +56,21 @@ cds.agd.s.mph.best.max <- lmer(cds.minph ~ adu_gender_m +
 
 # Prop CDS ####
 cds.prp.best.max <- lmer(prp.cds ~ agem.c +
-                      (1|Corpus), data = propCDS, REML = T)
+                      (1 + chi_gender * agem.c + chi_gender * n_sibs|Corpus),
+                      data = propCDS, REML = T,
+                       control = lmerControl(optCtrl = list(maxfun = 500000),
+                                                 optimizer = "bobyqa"))
 
 cds.prp.agd.best.max <- lmer(prp.cds ~ agem.c * adu_gender_m +
-                       (1|Corpus) + (1|ID), data = propCDS.agd, REML = T)
+                       (1 + chi_gender * agem.c * chi_gender *  n_sibs|Corpus) +
+                         (1|ID),
+                       data = propCDS.agd, REML = T,
+                       control = lmerControl(optCtrl = list(maxfun = 500000),
+                                                 optimizer = "bobyqa"))
 
 cds.prp.agd.s.best.max <- lmer(prp.cds ~ agem.c + adu_gender_m +
-                       (1|Corpus) + (1|ID), data = propCDS.agd.sub, REML = T)
+                       (1 + chi_gender * agem.c * chi_gender *  n_sibs|Corpus) +
+                         (1|ID),
+                       data = propCDS.agd.sub, REML = T,
+                       control = lmerControl(optCtrl = list(maxfun = 500000),
+                                                 optimizer = "bobyqa"))

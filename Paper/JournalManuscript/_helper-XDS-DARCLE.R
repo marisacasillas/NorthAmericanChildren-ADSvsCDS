@@ -24,7 +24,8 @@ results.plot.path <- "plots/results/"
 support.plot.path <- "plots/supporting/"
 scripts <- "subscripts/"
 models <- "non-logged/"
-#models <- "logged/"
+#models <- "logged/" # NB: This version will run with errors due to
+#                          a missing logged version of "MOD-Maximal.R"
 
 
 # Basic plotting theme settings
