@@ -86,8 +86,10 @@ cor.test(junkdata.excl$jnk.prp, junkdata.excl$AgeMonths,
 ################################################################################
 # LOOKING AT LENA ERRORS
 xdsall.copy <- xdsall %>%
-              mutate(fem.right = ifelse(lena_id == "FAN" & adu_gender_m == "FEMALE", 1, 0),
-                     mal.right = ifelse(lena_id == "MAN" & adu_gender_m == "MALE", 1, 0),
+              mutate(fem.right = ifelse(lena_id == "FAN" &
+                                          adu_gender_m == "FEMALE", 1, 0),
+                     mal.right = ifelse(lena_id == "MAN" &
+                                          adu_gender_m == "MALE", 1, 0),
                      gen.right = ifelse(fem.right == 1 | mal.right == 1, 1, 0))
 
 # overall divergence from lena's gender labels
@@ -117,7 +119,8 @@ lena.err.all <- xdsall.copy %>%
 # 9.5% of the time in CDS but only 3.8% of the time for ADS
 #  2     FAN     ADS         MALE   103     2727 0.0377704437
 #  5     FAN     CDS         MALE   489     5118 0.0955451348
-# conversely, lena thought the speaker was actually a male when she was actually a female
+# conversely, lena thought the speaker was actually a male when
+# she was actually a female
 # 14     MAN     ADS       FEMALE   516     1527 0.3379174853
 # 17     MAN     CDS       FEMALE   330     1514 0.2179656539
 
@@ -202,4 +205,34 @@ no.xds.ID <-  no.ads.ID %>%
               right_join(pre.excl.xds, by = "ID") %>%
               right_join(post.excl.xds, by = "ID") %>%
               arrange(pre.blk.N, post.blk.N, -no.cds.blk, no.ads.blk)
+
+################################################################################
+# CORRELATION OF OUR BLOCK-SELECTION FINDINGS WITH AWC
+cdsratedata.sub <- dplyr::select(cdsratedata, -Corpus)
+adsratedata.sub <- dplyr::select(adsratedata, ID, ads.minph, ads.min)
+propcdsratedata.sub <- dplyr::select(propCDS, ID, prp.cds)
+
+awc.comparison.full <- awc.comparison %>%
+  left_join(cdsratedata.sub, by = c("sample_id" = "ID")) %>%
+  left_join(adsratedata.sub, by = c("sample_id" = "ID")) %>%
+  left_join(propcdsratedata.sub, by = c("sample_id" = "ID"))
+
+# AWC with ADS minPH: Significantly correlated
+cor.test(awc.comparison.full$AWC, awc.comparison.full$ads.minph,
+         method = "spearman")
+# AWC with CDS minPH: Significantly correlated
+cor.test(awc.comparison.full$AWC, awc.comparison.full$cds.minph,
+         method = "spearman")
+
+write_csv(awc.comparison.full, paste0("x-scratch/",
+                                      "awc_comparison_full-",
+                                      gsub(":", "", gsub(" ", "_", Sys.time())),
+                                      ".csv"))
+
+################################################################################
+# Check on range of minutes looked at per recording and minutes of speech heard
+awc.comparison.full$totalspch.min <- awc.comparison.full$cds.min +
+  awc.comparison.full$ads.min
+summary(awc.comparison.full$ID.h)
+summary(awc.comparison.full$totalspch.min)
 

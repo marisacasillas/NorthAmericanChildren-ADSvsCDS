@@ -34,6 +34,7 @@ ptcp.input <-
   "proposed_sample_summary-22Jun16 with substitutes-FINALbeforeIDSlabelannotation-restricted20171031.csv"
 aclew.input <- "ACLEW_list_of_corpora-restricted20171031.csv"
 vd.demo.update <- "vd_demo_update-restricted20171031.csv"
+awc.comparison <- read_csv(paste0(input.path, "idsads_awccvc.csv"))
 
 source(paste0(scripts,"read-and-prep.R"))
 # NB: the main data table is called xdsall
@@ -485,18 +486,18 @@ if (printfigs == "Y") {
 
 # Run the following lines for the maximal versions of the model
 # NB: This takes quite a while!
-source(paste0(scripts, models, "MOD-Maximal.R"))
-# ADS minPH
-summary(ads.mph.best.max) # ADS minPH overall
-summary(ads.agd.mph.best.max) # ADS minPH with speaker gender
-summary(ads.agd.s.mph.best.max) # ADS minPH with speaker gender, no male speech cases removed
-
-# CDS minPH
-summary(cds.mph.best.max) # CDS minPH overall
-summary(cds.agd.mph.best.max) # CDS minPH with speaker gender
-summary(cds.agd.s.mph.best.max) # CDS minPH with speaker gender, no male speech cases removed
-
-# Prop CDS
-summary(cds.prp.best.max) # Prop CDS overall
-summary(cds.prp.agd.best.max) # Prop CDS with speaker gender
-summary(cds.prp.agd.s.best.max) # Prop CDS with speaker gender, no male speech cases removed
+# source(paste0(scripts, models, "MOD-Maximal.R"))
+# # ADS minPH
+# summary(ads.mph.best.max) # ADS minPH overall
+# summary(ads.agd.mph.best.max) # ADS minPH with speaker gender
+# summary(ads.agd.s.mph.best.max) # ADS minPH with speaker gender, no male speech cases removed
+# 
+# # CDS minPH
+# summary(cds.mph.best.max) # CDS minPH overall
+# summary(cds.agd.mph.best.max) # CDS minPH with speaker gender
+# summary(cds.agd.s.mph.best.max) # CDS minPH with speaker gender, no male speech cases removed
+# 
+# # Prop CDS
+# summary(cds.prp.best.max) # Prop CDS overall
+# summary(cds.prp.agd.best.max) # Prop CDS with speaker gender
+# summary(cds.prp.agd.s.best.max) # Prop CDS with speaker gender, no male speech cases removed
