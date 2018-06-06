@@ -220,12 +220,20 @@ awc.comparison.full <- awc.comparison %>%
 shapiro.test(awc.comparison.full$ads.minph)
 shapiro.test(awc.comparison.full$cds.minph)
 shapiro.test(awc.comparison.full$AWC)
+shapiro.test(awc.comparison.full$CVC)
 
 # AWC with ADS minPH: Significantly correlated
 cor.test(awc.comparison.full$AWC, awc.comparison.full$ads.minph,
          method = "spearman")
 # AWC with CDS minPH: Significantly correlated
 cor.test(awc.comparison.full$AWC, awc.comparison.full$cds.minph,
+         method = "spearman")
+
+# CVC with ADS minPH: Significantly correlated
+cor.test(awc.comparison.full$CVC, awc.comparison.full$ads.minph,
+         method = "spearman")
+# CVC with CDS minPH: Significantly correlated
+cor.test(awc.comparison.full$CVC, awc.comparison.full$cds.minph,
          method = "spearman")
 
 write_csv(awc.comparison.full, paste0("x-scratch/",
