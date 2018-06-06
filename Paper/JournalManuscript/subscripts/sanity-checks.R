@@ -217,6 +217,10 @@ awc.comparison.full <- awc.comparison %>%
   left_join(adsratedata.sub, by = c("sample_id" = "ID")) %>%
   left_join(propcdsratedata.sub, by = c("sample_id" = "ID"))
 
+shapiro.test(awc.comparison.full$ads.minph)
+shapiro.test(awc.comparison.full$cds.minph)
+shapiro.test(awc.comparison.full$AWC)
+
 # AWC with ADS minPH: Significantly correlated
 cor.test(awc.comparison.full$AWC, awc.comparison.full$ads.minph,
          method = "spearman")
