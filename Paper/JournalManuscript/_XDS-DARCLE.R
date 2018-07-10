@@ -159,6 +159,7 @@ adsratedata.agd <-  modeldata.excl %>%
                 right_join(ID.agd.combos, by = c("ID", "adu_gender_m")) %>%
                 replace_na(list(ads.min = 0)) %>%
                 left_join(ID.t.h, by = "ID") %>%
+                ungroup %>%
                 mutate_if(sapply(., is.character), as.factor) %>%
                 mutate(agem.c = AgeMonths - mean(IDS_demo_update$AgeMonths),
                        age.bin = ifelse(AgeMonths < 12, 0, 1),
@@ -173,6 +174,7 @@ cdsratedata.agd <-  modeldata.excl %>%
                 right_join(ID.agd.combos, by = c("ID", "adu_gender_m")) %>%
                 replace_na(list(cds.min = 0)) %>%
                 left_join(ID.t.h, by = "ID") %>%
+                ungroup %>%
                 mutate_if(sapply(., is.character), as.factor) %>%
                 mutate(agem.c = AgeMonths - mean(IDS_demo_update$AgeMonths),
                        age.bin = ifelse(AgeMonths < 12, 0, 1),

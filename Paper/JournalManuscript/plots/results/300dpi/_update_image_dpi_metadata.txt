@@ -1,0 +1,1 @@
+gm mogrify -units PixelsPerInch -density 300x300 *.png

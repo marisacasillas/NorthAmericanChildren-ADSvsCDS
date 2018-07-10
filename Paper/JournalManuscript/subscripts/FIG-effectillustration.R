@@ -48,7 +48,7 @@ ggsave(plot = cdsmph.mat_ed,
        path = results.plot.path,
        width = 30,
        height = 20,
-       units = "cm",dpi = 72,
+       units = "cm", dpi = 300,
        bg = "transparent"
 )
 
@@ -79,7 +79,7 @@ ggsave(plot = cdsmph.mat_yr,
        path = results.plot.path,
        width = 30,
        height = 20,
-       units = "cm",dpi = 72,
+       units = "cm",dpi = 300,
        bg = "transparent"
 )
 
@@ -114,7 +114,7 @@ ggsave(plot = adsmph.mat_yr,
        path = results.plot.path,
        width = 30,
        height = 20,
-       units = "cm",dpi = 72,
+       units = "cm",dpi = 300,
        bg = "transparent"
 )
 # panel 2
@@ -142,7 +142,7 @@ ggsave(plot = adsmph.chi_yr,
        path = results.plot.path,
        width = 30,
        height = 20,
-       units = "cm",dpi = 72,
+       units = "cm",dpi = 300,
        bg = "transparent"
 )
 # Conjoined
@@ -155,7 +155,7 @@ ggsave(plot = ads.multiplot,
        path = results.plot.path,
        width = 60,
        height = 20,
-       units = "cm",dpi = 72,
+       units = "cm",dpi = 300,
        bg = "transparent"
 )
 
@@ -193,7 +193,7 @@ ggsave(plot = cdsmph.chi_yr.adg,
        path = results.plot.path,
        width = 30,
        height = 20,
-       units = "cm",dpi = 72,
+       units = "cm",dpi = 300,
        bg = "transparent"
 )
 # panel 2
@@ -226,7 +226,7 @@ ggsave(plot = adsmph.chi_yr.adg,
        path = results.plot.path,
        width = 30,
        height = 20,
-       units = "cm",dpi = 72,
+       units = "cm",dpi = 300,
        bg = "transparent"
 )
 # panel 3
@@ -259,7 +259,7 @@ ggsave(plot = cdsprp.chi_yr.adg,
        path = results.plot.path,
        width = 30,
        height = 20,
-       units = "cm",dpi = 72,
+       units = "cm",dpi = 300,
        bg = "transparent"
 )
 # Conjoined
@@ -271,7 +271,7 @@ ggsave(plot = xds_cdsprp.multiplot,
        path = results.plot.path,
        width = 60,
        height = 20,
-       units = "cm",dpi = 72,
+       units = "cm",dpi = 300,
        bg = "transparent"
 )
 
@@ -304,7 +304,7 @@ ggsave(plot = matedu.matyr,
        path = results.plot.path,
        width = 30,
        height = 20,
-       units = "cm",dpi = 72,
+       units = "cm",dpi = 300,
        bg = "transparent"
 )
 
@@ -332,7 +332,7 @@ ggsave(plot = cdsmph.hist,
        path = results.plot.path,
        width = 30,
        height = 10,
-       units = "cm",dpi = 72,
+       units = "cm",dpi = 300,
        bg = "transparent"
 )
 
@@ -362,7 +362,7 @@ ggsave(plot = cdsprp.mother_yr,
        path = results.plot.path,
        width = 30,
        height = 20,
-       units = "cm",dpi = 72,
+       units = "cm",dpi = 300,
        bg = "transparent"
 )
 
@@ -446,7 +446,7 @@ ggsave(plot = cdsprp.mother_yr,
 #        path = results.plot.path,
 #        width = 60,
 #        height = 40,
-#        units = "cm",dpi = 72,
+#        units = "cm",dpi = 300,
 #        bg = "transparent"
 # )
 # 
@@ -523,7 +523,7 @@ ggsave(plot = cdsprp.mother_yr,
 #        path = results.plot.path,
 #        width = 60,
 #        height = 40,
-#        units = "cm",dpi = 72,
+#        units = "cm",dpi = 300,
 #        bg = "transparent"
 # )
 # 
@@ -563,7 +563,7 @@ ggsave(plot = cdsprp.mother_yr,
 #        path = results.plot.path,
 #        width = 40,
 #        height = 20,
-#        units = "cm",dpi = 72,
+#        units = "cm",dpi = 300,
 #        bg = "transparent"
 # )
 # 
@@ -595,7 +595,7 @@ ggsave(plot = cdsprp.mother_yr,
 #        path = results.plot.path,
 #        width = 40,
 #        height = 20,
-#        units = "cm",dpi = 72,
+#        units = "cm",dpi = 300,
 #        bg = "transparent"
 # )
 # 
@@ -616,7 +616,7 @@ ggsave(plot = cdsprp.mother_yr,
 #        path = results.plot.path,
 #        width = 40,
 #        height = 20,
-#        units = "cm",dpi = 72,
+#        units = "cm",dpi = 300,
 #        bg = "transparent"
 # )
 # 
